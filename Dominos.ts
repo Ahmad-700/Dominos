@@ -1,17 +1,18 @@
-import { Board,PlayerHand,Players,CARDS,Card} from './factory'
+import { PlayerHand,Players,CARDS,Card} from './factory'
 import Player from './Classes/Player';
+import Board from './Classes/Board';
 
 
 
 
-var board: Board = [];
+var board: Board = new Board();
 var players: Players = startGame(board);
 console.log(players);
 /**
  * give all players random 7 cards
  */
 function startGame(board:Board):Players {
-   board = [];
+   
    let shuffleCards = CARDS.sort(() => Math.random() - 0.5);
    
    let p = [shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7)];
