@@ -2,8 +2,8 @@ import { PlayerHand, Card } from '../factory';
 import Board from './Board';
 
 export default class Player {
-
-   constructor(private cards: PlayerHand) {
+   
+   constructor(private cards: PlayerHand,public playerName:1|2|3) {
       console.assert(cards.length === 7, 'Expected 7. Got=', cards.length, '. Player should initialize with 7 cards.')
    }
 
