@@ -1,1 +1,9 @@
-<p>player works!</p>
+<div [ngClass]="{'flex justify-center':player.num%2==0,'absolute top-1/2 transform -translate-y-1/2':player.num%2!=0,'right-8':player.num==1,'ml-20':player.num==3}">
+
+<div *ngFor="let c of player.cards" [ngClass]="{'w-12':player.num%2==0,'h-12 rotate-90':player.num%2!=0}">
+
+  <img width="55wv"
+  [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'" >
+</div>
+</div>
+
