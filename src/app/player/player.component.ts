@@ -13,7 +13,8 @@ export class PlayerComponent {
   @Input() player!: Player;
 
   play(card: Domino) {
-    this.main.board.put(card, this.player);
+    this.main.board.put(card,this.player)
+    console.log('board.cards=',this.main.board.getCards())
   }
 
 }

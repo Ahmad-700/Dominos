@@ -8,9 +8,13 @@ export const DOMINOS:readonly Domino[] = [new Domino(0,0),new Domino(0,1),new Do
  */
 export const MAXIMUM_REPEATED_DOTS = 5;
 /**
- * Each player maximum repeated double(father). ex:[(0,0),(4,6),(1,1)] So this hand has 2 doubles
+ * Each player maximum repeated double(father). ex:[(0,0),(4,6),(1,1)] So this has 2 doubles
  */
 export const MAXIMUM_REPEATED_DOUBLES = 4;
+/**
+ * allow/prevent same team have a whole 7 dotsNumber between them
+ */
+export const ALLOW_TEAM_HAVE_SAME_DOTS = false
 //datatype FaceTail is 0:0, 0:1,... ,6:6.
 //datatype Domino is faceTail with more information like isInBoard and if so how play it.
 //datatype Board has array of played dominos in ordered way like: ['4:6', '6:6', '5:6'] that means it look like  0:6|6:6|6:5 so board in this state will has face=0 and tail=5.

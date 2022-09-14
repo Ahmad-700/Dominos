@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import Board from 'src/Classes/Board';
-import { Domino } from 'src/Classes/Domino';
 import Player from 'src/Classes/Player';
-import { DOMINOS } from 'src/factory';
 import Functions from 'src/Classes/Functions';
 @Injectable({
   providedIn: 'root'
@@ -15,8 +13,7 @@ export class MainService {
   }
 
   startGame() {
-    const fac = new Functions();
-    fac.initializePlayers(this)
+    Functions.initializePlayers(this)
       .shuffleCards(this);
 
     // let test = this.players[3].cards[0];
