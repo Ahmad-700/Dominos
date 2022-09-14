@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Domino } from 'src/Classes/Domino';
 import Player from 'src/Classes/Player';
 import { MainService } from '../main.service';
 
@@ -11,5 +12,8 @@ export class PlayerComponent {
   constructor(public main: MainService) { }
   @Input() player!: Player;
 
+  play(card: Domino) {
+    this.main.board.put(card, this.player);
+  }
 
 }

@@ -1,1 +1,6 @@
-<p>board works!</p>
+<div class="relative bg-green-500 h-full w-full">
+  <div *ngFor="let c of board.cards" [ngClass]="{'rotate-90':!c.isDouble}" class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+    <img width="55wv"
+    [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'" >
+  </div>
+</div>

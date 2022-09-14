@@ -1,34 +1,30 @@
 import { Injectable } from '@angular/core';
 import Board from 'src/Classes/Board';
+import { Domino } from 'src/Classes/Domino';
 import Player from 'src/Classes/Player';
 import { DOMINOS } from 'src/factory';
+import Functions from 'src/Classes/Functions';
 @Injectable({
   providedIn: 'root'
 })
-export class MainService  {
+export class MainService {
   public board: Board = new Board();
-  public players!: Player[];
+  public players: Player[] = [];
   constructor() {
     this.startGame();
   }
 
   startGame() {
-    this.players = [];
-    this.players.push(new Player(0));
-    this.players.push(new Player(1));
-    this.players.push(new Player(2));
-    this.players.push(new Player(3));
-    let shuffleCards = DOMINOS.sort(() => Math.random() - 0.5);
-    let d = [shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7)];
-    this.players[0].cards = d[0]
-    this.players[1].cards = d[1]
-    this.players[2].cards = d[2]
-    this.players[3].cards = d[3]
+    const fac = new Functions();
+    fac.initializePlayers(this)
+      .shuffleCards(this);
 
-    
+    // let test = this.players[3].cards[0];
+    // let test1 = this.players[1].cards[1];
+    // console.log('test', test);
+    // this.board.put(test, this.players[3]);
+    // this.board.put(test1, this.players[1]);
   }
-
-
 
 
 
