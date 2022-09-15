@@ -6,13 +6,15 @@ import Player from "./Player";
 export default class Board {
   public face: DotsNumber | null = null;
   public tail: DotsNumber | null = null;
-  public curPlayer: Player | null = null;
+  public curPlayer: Player;
   private cards: Domino[];
   public getCards(): readonly Domino[] {
     return this.cards;
   }
   constructor(public players: Player[]) {
     this.cards = [];
+    Functions.shuffleCards(this.players);
+    this.curPlayer = Functions.firstPlayer(this.players);
   }
 
   /**
@@ -30,13 +32,9 @@ export default class Board {
     if (this.curPlayer != null && this.curPlayer != player) {
       console.assert(false, 'Not your turn; Expected player=', this.curPlayer, ' to play. Got player=', player);
       return false;
+    }
 
-    }
-    if (this.curPlayer == null && !this.isIncludeDoubleSix(player.cards)) {
-      console.assert(false, 'First Player should have double six; Expected player\'s cards=', player.cards, 'includes double six. Got isIncludeDoubleSix=', this.isIncludeDoubleSix(player.cards))
-      return false;
-    }
-    if (this.curPlayer == null && (domino.face != 6 || domino.tail != 6) && Functions.cardsWith(6, player.cards).length > 2) {
+    if (this.cards.length == 0 && (domino.face != 6 || domino.tail != 6) && Functions.cardsWith(6, player.cards).length > 1) {
       console.assert(false, 'You can\'t play other than double six, because you have other dots six cards; Expected (6,6) card. Got=', domino);
       return false;
     }
@@ -96,15 +94,35 @@ export default class Board {
     card.playedBy = player;
     player.cards.splice(player.cards.indexOf(card), 1);
     this.curPlayer = this.players[(this.players.indexOf(player) + 1) % 4 as (0 | 1 | 2 | 3)]
-    if (this.face && this.tail)
+    //todo create gameOver because if gameOver while-loop will be infinite loop!
+    if (this.face && this.tail)//if next player can't play(pass) move to the next player until can play
       while (Functions.isPass(this.curPlayer.cards, this.face, this.tail))
-        this.curPlayer = this.nextPlayer(), console.log('PASS')
+        this.curPlayer = this.nextPlayer();
 
+    //set rotation of card
+    if (card.isDouble)
+      return;
+    if (card.firstCard)
+      return;
+    let indexOfFirstCard = this.cards.indexOf(this.cards.filter(v => v.firstCard)[0])
+    let inFaceCards = this.cards.filter((v, i) => i < indexOfFirstCard).includes(card);
+    let inTailCards = this.cards.filter((v, i) => i > indexOfFirstCard).includes(card);
 
-    // while (!Functions.isPass(this.curPlayer.cards, this.face, this.tail)) {
-    //   this.curPlayer = this.players[(this.players.indexOf(this.curPlayer) + 1) % 4 as (0 | 1 | 2 | 3)];
-    //   console.log('PASS')
-    // }
+    if (inFaceCards) {
+      let prev = this.cards[this.cards.indexOf(card) + 1]
+      if (card.tail != (prev.rotate?prev.tail:prev.face)) {
+        console.log(card, 'rotate\n', 'face:', card.face, 'tail:', card.tail, '   prev> face:', prev.face, 'tail:', prev.tail)
+        card.rotate = true;
+      }
+    }
+    else if (inTailCards) {
+      let prev = this.cards[this.cards.indexOf(card) - 1];
+      if (card.face != (prev.rotate?prev.face:prev.tail)) {
+        console.log(card, 'rotate\n', 'face:', card.face, 'tail:', card.tail, '   prev> face:', prev.face, 'tail:', prev.tail)
+        card.rotate = true;
+      }
+    }
+
   }
 
 
@@ -124,11 +142,6 @@ export default class Board {
     return this.players[(this.players.indexOf(this.curPlayer as Player) + 3) % 4 as (0 | 1 | 2 | 3)]
   }
 
-  private isIncludeDoubleSix(cards: Domino[]): boolean {
-    for (let c of cards)
-      if (c.face == 6 && c.tail == 6)
-        return true;
-    return false;
-  }
+
 
 }

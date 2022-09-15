@@ -6,7 +6,7 @@
       <div [ngClass]="{'rotation-wrapper-outer':playerIndex()%2!=0}">
         <div [ngClass]="{'rotation-wrapper-inner':playerIndex()%2!=0}" >
 
-          <img [ngClass]="{'element-to-rotate':playerIndex()%2!=0}" class="hover:bg-slate-300" width="50px" (click)="play(c)"
+          <img [ngClass]="{'element-to-rotate':playerIndex()%2!=0,'hover:opacity-80':main.board.curPlayer==player}" width="50px" (click)="play(c)"
             [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'">
         </div>
       </div>

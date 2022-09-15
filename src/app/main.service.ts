@@ -12,7 +12,7 @@ export class MainService {
   }
 
   startGame() {
-    Functions.shuffleCards(this.board.players);
+    // this.board.curPlayer = Functions.firstPlayer()
 
     // let test = this.players[3].cards[0];
     // let test1 = this.players[1].cards[1];

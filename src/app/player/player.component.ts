@@ -9,15 +9,15 @@ import { MainService } from '../main.service';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent {
-  constructor(public main: MainService) { }
   @Input() player!: Player;
+  constructor(public main: MainService) { }
 
   play(card: Domino) {
-    this.main.board.put(card,this.player)
+    this.main.board.put(card, this.player);
   }
 
-  playerIndex():0|1|2|3 {
-    return this.main.board.players.indexOf(this.player) as (0|1|2|3)
+  playerIndex(): 0 | 1 | 2 | 3 {
+    return this.main.board.players.indexOf(this.player) as (0 | 1 | 2 | 3);
   }
 
 }

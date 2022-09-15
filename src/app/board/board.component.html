@@ -5,7 +5,7 @@
     <div [ngClass]="{'rotation-wrapper-outer':!c.isDouble}">
       <div [ngClass]="{'rotation-wrapper-inner':!c.isDouble}">
 
-        <img [ngClass]="{'element-to-rotate90' :!c.isDouble,'element-to-rotate270':!c.isDouble&&rotate180(c)}" width="50px"
+        <img [ngClass]="{'element-to-rotate90' :!c.isDouble,'element-to-rotate270':!c.isDouble&&c.rotate}" width="50px"
           [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'">
       </div>
     </div>

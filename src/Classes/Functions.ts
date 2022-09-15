@@ -5,7 +5,7 @@ import Player from "./Player";
 
 export default class Functions {
   constructor() { }
-  public static initializePlayers():Player[] {
+  public static initializePlayers(): Player[] {
     let players = [];
     players.push(new Player());
     players.push(new Player());
@@ -18,7 +18,7 @@ export default class Functions {
    *
    * @returns shuffled cards with valid shuffling
    */
-  public static shuffleCards(players:Player[]){
+  public static shuffleCards(players: Player[]) {
     let shuffleCards = [...DOMINOS].sort(this.random).sort(this.random)
     let d = [shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7)];
     players[0].cards = d[0];
@@ -37,7 +37,7 @@ export default class Functions {
    */
   public static cardsWith(dots: DotsNumber, cards: Domino[]): Domino[] {
     let dn = this.dotsNumber(cards);
-    let arr:Domino[] = [];
+    let arr: Domino[] = [];
     for (let c of cards)
       if (c.face == dots || c.tail == dots)
         arr.push(c);
@@ -48,13 +48,34 @@ export default class Functions {
    *
    * @returns if any card in cards can be played or player is passed(جلاه)
    */
-  public static isPass(cards: Domino[], face: DotsNumber, tail: DotsNumber):boolean {
-    console.assert(cards.length <10,'Expected player hand i.e cards.length <10. Got cards.length=',cards.length)
-    console.assert(face != null && tail!=null, 'expected face and tail exist. Got=', face, tail);
+  public static isPass(cards: Domino[], face: DotsNumber, tail: DotsNumber): boolean {
+    console.assert(cards.length < 10, 'Expected player hand i.e cards.length <10. Got cards.length=', cards.length)
+    console.assert(face != null && tail != null, 'expected face and tail exist. Got=', face, tail);
     for (let c of cards)
       if (c.face == face || c.tail == face || c.face == tail || c.tail == tail)
         return false;
     return true;
+  }
+
+  public static firstPlayer(players: Player[]): Player {
+    for (let player of players)
+      if (this.contains(player.cards,6,6))
+        return player;
+    throw new Error('firstPlayer called while no player has (6,6)!!!');
+  }
+
+  /**
+   *
+   * @param cards array
+   * @param d1 face or tail
+   * @param d2 the other tail or face
+   * @returns true if card with (d1,d2) or (d2,d1) contains in cards
+   */
+  public static contains(cards: Domino[], d1: DotsNumber, d2: DotsNumber): boolean {
+    for (let c of cards)
+      if ((c.face == d1 && c.tail == d2) || (c.tail == d1 && c.face == d2))
+        return true;
+    return false;
   }
 
   /**
@@ -71,7 +92,7 @@ export default class Functions {
       for (let i = 0; i < 2; i++)
         for (let d = 0; d <= 6; d++)
           if (7 <= this.cardsWith(d as DotsNumber, players[i].cards).length + this.cardsWith(d as DotsNumber, players[i + 2].cards).length) {
-            console.log(players[i].cards,'and',players[i+2].cards,'has all numbers=',d)
+            console.log(players[i].cards, 'and', players[i + 2].cards, 'has all numbers=', d)
             return true;
           }
 
