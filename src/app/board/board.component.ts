@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import Board from 'src/Classes/Board';
+import { Domino } from 'src/Classes/Domino';
 
 @Component({
   selector: 'app-board',
@@ -11,6 +12,13 @@ export class BoardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  rotate180(c: Domino):boolean {
+    let cards = this.board.getCards();
+
+    //there are not exactly previous and next; maybe card pushed at end or added at beginning of board's cards
+    return false;
   }
 
 }

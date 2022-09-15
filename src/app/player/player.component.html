@@ -1,8 +1,14 @@
 <div
-  [ngClass]="{'flex justify-center':player.num%2==0,'absolute top-1/2 transform -translate-y-1/2':player.num%2!=0,'right-8':player.num==1,'ml-20':player.num==3}">
+  [ngClass]="{'flex justify-center':player.num%2==0,'absolute top-1/2 -translate-y-1/2':player.num%2!=0,'right-8':player.num==1,'left-8':player.num==3,'mt-1':player.num==0,'mt-2':player.num==2}" class="">
 
-  <div *ngFor="let c of player.cards" [ngClass]="{'w-12':player.num%2==0,'h-12 rotate-90':player.num%2!=0}">
+    <div *ngFor="let c of player.cards"
+      [ngStyle]="{'width':(player.num%2==0?50:100)+'px','height':(player.num%2==0?100:50)+'px'}">
+      <div [ngClass]="{'rotation-wrapper-outer':player.num%2!=0}">
+        <div [ngClass]="{'rotation-wrapper-inner':player.num%2!=0}" >
 
-    <img width="55px" (click)="play(c)" [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'">
+          <img [ngClass]="{'element-to-rotate':player.num%2!=0}" class="hover:bg-slate-300" width="50px" (click)="play(c)"
+            [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'">
+        </div>
+      </div>
   </div>
 </div>

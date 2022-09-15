@@ -6,15 +6,13 @@ import Functions from 'src/Classes/Functions';
   providedIn: 'root'
 })
 export class MainService {
-  public board: Board = new Board();
-  public players: Player[] = [];
+  public board: Board = new Board(Functions.initializePlayers());
   constructor() {
     this.startGame();
   }
 
   startGame() {
-    Functions.initializePlayers(this)
-      .shuffleCards(this);
+    Functions.shuffleCards(this.board.players);
 
     // let test = this.players[3].cards[0];
     // let test1 = this.players[1].cards[1];

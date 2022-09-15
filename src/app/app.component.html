@@ -1,21 +1,21 @@
 <div class=" min-h-screen max-h-screen grid grid-cols-8 bg-slate-300">
   <div class="bg-gray-700">
-    <app-player [player]="main.players[3]"></app-player>
+    <app-player [player]="main.board.players[3]"></app-player>
   </div>
   <div class="col-span-6 grid grid-rows-5 bg-gray-700">
     <div class="bg-gray-700 ">
-      <app-player [player]="main.players[2]"></app-player>
+      <app-player [player]="main.board.players[2]"></app-player>
 
     </div>
     <div class="bg-gray-200 row-span-3  rounded-lg border-orange-600 border-4">
       <app-board [board]="main.board"></app-board>
     </div>
     <div class="bg-gray-700">
-      <app-player [player]="main.players[0]"></app-player>
+      <app-player [player]="main.board.players[0]"></app-player>
 
     </div>
   </div>
   <div class="bg-gray-700">
-    <app-player [player]="main.players[1]"></app-player>
+    <app-player [player]="main.board.players[1]"></app-player>
   </div>
 </div>

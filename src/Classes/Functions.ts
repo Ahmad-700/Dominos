@@ -5,29 +5,28 @@ import Player from "./Player";
 
 export default class Functions {
   constructor() { }
-  public static initializePlayers(main: MainService) {
-    main.players = [];
-    main.players.push(new Player(0));
-    main.players.push(new Player(1));
-    main.players.push(new Player(2));
-    main.players.push(new Player(3));
-    return this;
+  public static initializePlayers():Player[] {
+    let players = [];
+    players.push(new Player(0));
+    players.push(new Player(1));
+    players.push(new Player(2));
+    players.push(new Player(3));
+    return players;
   }
   /**
    *
    *
    * @returns shuffled cards with valid shuffling
    */
-  public static shuffleCards(main: MainService): any {
+  public static shuffleCards(players:Player[]){
     let shuffleCards = [...DOMINOS].sort(this.random).sort(this.random)
     let d = [shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7), shuffleCards.splice(0, 7)];
-    main.players[0].cards = d[0];
-    main.players[1].cards = d[1];
-    main.players[2].cards = d[2];
-    main.players[3].cards = d[3];
-    if (this.invalidShuffling(main.players))
-      this.shuffleCards(main);
-    return this;
+    players[0].cards = d[0];
+    players[1].cards = d[1];
+    players[2].cards = d[2];
+    players[3].cards = d[3];
+    if (this.invalidShuffling(players))
+      this.shuffleCards(players);
   }
 
   /**

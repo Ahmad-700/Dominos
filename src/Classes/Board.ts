@@ -6,12 +6,12 @@ import Player from "./Player";
 export default class Board {
   public face!: DotsNumber;
   public tail!: DotsNumber;
-  public curPlayer: 0 | 1 | 2 | 3 | -1 = -1;
+  public curPlayer: Player|null = null;
   private cards: Domino[];
   public getCards(): readonly Domino[] {
     return this.cards;
   }
-  constructor() {
+  constructor(public players:Player[]) {
     this.cards = [];
   }
 
@@ -28,28 +28,27 @@ export default class Board {
       console.assert(false, 'Play with your own cards; Expected player=', player, ' has card=', domino, '. Got false')
       return false;
     }
-    if (this.curPlayer != -1 && this.curPlayer != player.num) {
+    if (this.curPlayer != null && this.curPlayer != player) {
       console.assert(false, 'Not your turn; Expected player=', this.curPlayer, ' to play. Got player=', player.num);
       return false;
     }
-    if (this.curPlayer == -1 && !this.isIncludeDoubleSix(player.cards)) {
+    if (this.curPlayer == null && !this.isIncludeDoubleSix(player.cards)) {
       console.assert(false, 'First Player should have double six; Expected player\'s cards=', player.cards, 'includes double six. Got isIncludeDoubleSix=', this.isIncludeDoubleSix(player.cards))
       return false;
     }
-    if (this.curPlayer == -1 && (domino.face != 6 || domino.tail != 6) && Functions.cardsWith(6,player.cards).length >2) {
+    if (this.curPlayer == null && (domino.face != 6 || domino.tail != 6) && Functions.cardsWith(6, player.cards).length > 2) {
       console.assert(false, 'You can\'t play other than double six, because you have other dots six cards; Expected (6,6) card. Got=', domino);
       return false;
     }
 
     //first time; board is empty
     if (this.cards.length == 0) {
-      domino.inBoard = true;
-      domino.playedBy = player;
-      player.cards.splice(player.cards.indexOf(domino), 1);
-      this.cards = [domino]
+
+      this.played(player, domino);
+      domino.firstCard = true;
+      this.cards.push(domino);
       this.face = domino.face;
       this.tail = domino.tail;
-      this.curPlayer = (player.num + 1) % 4 as (0 | 1 | 2 | 3);
       return true;
     }
 
@@ -81,11 +80,30 @@ export default class Board {
       console.error('can\'t put domino=', domino, ' in board with face=' + this.face + ' and tail=' + this.tail);
       return false;
     }
-    domino.inBoard = true;
-    domino.playedBy = player;
-    player.cards.splice(player.cards.indexOf(domino), 1);
-    this.curPlayer = (player.num + 1) % 4 as (0 | 1 | 2 | 3);
+
+    this.played(player, domino);
     return true;
+  }
+
+
+  /**
+   * routine stuff when player play a card. ex: next player turn, card is inBoard...etc
+   * @param player
+   * @param card
+   */
+  private played(player: Player, card: Domino):void {
+    card.inBoard = true;
+    card.playedBy = player;
+    player.cards.splice(player.cards.indexOf(card), 1);
+    this.curPlayer = this.players[(this.players.indexOf(player) + 1) % 4 as (0 | 1 | 2 | 3)];
+  }
+
+  /**
+   * return
+   */
+  private nextPlayer(): Player{
+    console.assert(this.curPlayer!=null,'nextPlayer called while current player is undefined; Expected curPlayer!=null. Got=',this.curPlayer)
+    return this.players[(this.players.indexOf(this.curPlayer as Player)+1)%4 as (0|1|2|3)]
   }
 
   private isIncludeDoubleSix(cards: Domino[]): boolean {
