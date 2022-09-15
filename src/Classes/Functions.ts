@@ -7,10 +7,10 @@ export default class Functions {
   constructor() { }
   public static initializePlayers():Player[] {
     let players = [];
-    players.push(new Player(0));
-    players.push(new Player(1));
-    players.push(new Player(2));
-    players.push(new Player(3));
+    players.push(new Player());
+    players.push(new Player());
+    players.push(new Player());
+    players.push(new Player());
     return players;
   }
   /**
@@ -44,7 +44,18 @@ export default class Functions {
     return arr;
   }
 
-  // public
+  /**
+   *
+   * @returns if any card in cards can be played or player is passed(جلاه)
+   */
+  public static isPass(cards: Domino[], face: DotsNumber, tail: DotsNumber):boolean {
+    console.assert(cards.length <10,'Expected player hand i.e cards.length <10. Got cards.length=',cards.length)
+    console.assert(face != null && tail!=null, 'expected face and tail exist. Got=', face, tail);
+    for (let c of cards)
+      if (c.face == face || c.tail == face || c.face == tail || c.tail == tail)
+        return false;
+    return true;
+  }
 
   /**
  *

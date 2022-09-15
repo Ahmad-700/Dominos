@@ -4,14 +4,14 @@ import Functions from "./Functions";
 import Player from "./Player";
 
 export default class Board {
-  public face!: DotsNumber;
-  public tail!: DotsNumber;
-  public curPlayer: Player|null = null;
+  public face: DotsNumber | null = null;
+  public tail: DotsNumber | null = null;
+  public curPlayer: Player | null = null;
   private cards: Domino[];
   public getCards(): readonly Domino[] {
     return this.cards;
   }
-  constructor(public players:Player[]) {
+  constructor(public players: Player[]) {
     this.cards = [];
   }
 
@@ -23,14 +23,14 @@ export default class Board {
    * @returns
    */
   public put(domino: Domino, player: Player, isFace?: boolean): boolean {
-
     if (!player.cards.includes(domino)) {
       console.assert(false, 'Play with your own cards; Expected player=', player, ' has card=', domino, '. Got false')
       return false;
     }
     if (this.curPlayer != null && this.curPlayer != player) {
-      console.assert(false, 'Not your turn; Expected player=', this.curPlayer, ' to play. Got player=', player.num);
+      console.assert(false, 'Not your turn; Expected player=', this.curPlayer, ' to play. Got player=', player);
       return false;
+
     }
     if (this.curPlayer == null && !this.isIncludeDoubleSix(player.cards)) {
       console.assert(false, 'First Player should have double six; Expected player\'s cards=', player.cards, 'includes double six. Got isIncludeDoubleSix=', this.isIncludeDoubleSix(player.cards))
@@ -44,11 +44,11 @@ export default class Board {
     //first time; board is empty
     if (this.cards.length == 0) {
 
-      this.played(player, domino);
       domino.firstCard = true;
       this.cards.push(domino);
       this.face = domino.face;
       this.tail = domino.tail;
+      this.played(player, domino);
       return true;
     }
 
@@ -91,19 +91,37 @@ export default class Board {
    * @param player
    * @param card
    */
-  private played(player: Player, card: Domino):void {
+  private played(player: Player, card: Domino): void {
     card.inBoard = true;
     card.playedBy = player;
     player.cards.splice(player.cards.indexOf(card), 1);
-    this.curPlayer = this.players[(this.players.indexOf(player) + 1) % 4 as (0 | 1 | 2 | 3)];
+    this.curPlayer = this.players[(this.players.indexOf(player) + 1) % 4 as (0 | 1 | 2 | 3)]
+    if (this.face && this.tail)
+      while (Functions.isPass(this.curPlayer.cards, this.face, this.tail))
+        this.curPlayer = this.nextPlayer(), console.log('PASS')
+
+
+    // while (!Functions.isPass(this.curPlayer.cards, this.face, this.tail)) {
+    //   this.curPlayer = this.players[(this.players.indexOf(this.curPlayer) + 1) % 4 as (0 | 1 | 2 | 3)];
+    //   console.log('PASS')
+    // }
+  }
+
+
+  /**
+   * return player after curPlayer
+   */
+  private nextPlayer(): Player {
+    console.assert(this.curPlayer != null, 'nextPlayer called while current player is undefined; Expected curPlayer!=null. Got=', this.curPlayer)
+    return this.players[(this.players.indexOf(this.curPlayer as Player) + 1) % 4 as (0 | 1 | 2 | 3)]
   }
 
   /**
-   * return
+   * return player after curPlayer
    */
-  private nextPlayer(): Player{
-    console.assert(this.curPlayer!=null,'nextPlayer called while current player is undefined; Expected curPlayer!=null. Got=',this.curPlayer)
-    return this.players[(this.players.indexOf(this.curPlayer as Player)+1)%4 as (0|1|2|3)]
+  private prevPlayer(): Player {
+    console.assert(this.curPlayer != null, 'prevPlayer called while current player is undefined; Expected curPlayer!=null. Got=', this.curPlayer)
+    return this.players[(this.players.indexOf(this.curPlayer as Player) + 3) % 4 as (0 | 1 | 2 | 3)]
   }
 
   private isIncludeDoubleSix(cards: Domino[]): boolean {

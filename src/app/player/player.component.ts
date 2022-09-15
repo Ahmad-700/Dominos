@@ -14,7 +14,10 @@ export class PlayerComponent {
 
   play(card: Domino) {
     this.main.board.put(card,this.player)
-    console.log('board.cards=',this.main.board.getCards())
+  }
+
+  playerIndex():0|1|2|3 {
+    return this.main.board.players.indexOf(this.player) as (0|1|2|3)
   }
 
 }

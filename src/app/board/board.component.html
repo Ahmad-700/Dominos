@@ -1,11 +1,11 @@
-<div class="flex items-center justify-center bg-green-500 h-full w-full">
+<div class="flex items-center justify-center h-full w-full">
   <div *ngFor="let c of board.getCards()"
   [ngClass]="{'mt-24':!c.isDouble}"
   [ngStyle]="{'width':(c.isDouble?50:100)+'px','height':(!c.isDouble?100:50)+'px'}">
     <div [ngClass]="{'rotation-wrapper-outer':!c.isDouble}">
       <div [ngClass]="{'rotation-wrapper-inner':!c.isDouble}">
 
-        <img [ngClass]="{'element-to-rotate':!c.isDouble,'rotate-180':rotate180(c)}" width="50px"
+        <img [ngClass]="{'element-to-rotate90' :!c.isDouble,'element-to-rotate270':!c.isDouble&&rotate180(c)}" width="50px"
           [src]="'./../../assets/img/'+c.face+'-'+c.tail+'.svg'">
       </div>
     </div>
